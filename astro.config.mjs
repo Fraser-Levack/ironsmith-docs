@@ -13,7 +13,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
 	// Update this to the real domain when the site is deployed
 	// (used for the sitemap and canonical URLs).
-	site: 'https://ironsmith-docs.example.com',
+	site: 'https://ironsmith-modeler-docs.vercel.app/',
 
 	integrations: [
 		starlight({
