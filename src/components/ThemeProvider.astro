@@ -1,0 +1,10 @@
+---
+// The site is dark-only: always use the dark theme, ignoring the visitor's
+// system preference and any theme stored by an earlier version of the site.
+---
+
+{/* Inlined (like Starlight's own provider) so the page never flashes light. */}
+<script is:inline>
+	document.documentElement.dataset.theme = 'dark';
+	window.StarlightThemeProvider = { updatePickers() {} };
+</script>

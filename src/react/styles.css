@@ -1,0 +1,25 @@
+/* Tailwind for the React pages (home page etc.). The Markdown docs don't
+   load this file, so Tailwind never affects them. */
+@import "tailwindcss";
+
+/* Site colours, usable as Tailwind classes: bg-iron-900, text-ember, ... */
+@theme {
+	--color-ember: #e2591d;
+	--color-ember-light: #f08c4b;
+	--color-ember-pale: #f7b58c;
+
+	--color-iron-50: #f2efec;
+	--color-iron-100: #e0dcd7;
+	--color-iron-200: #b6b1ab;
+	--color-iron-300: #817b74;
+	--color-iron-400: #4e4a45;
+	--color-iron-500: #2e2b28;
+	--color-iron-600: #1c1a18;
+	--color-iron-700: #171513;
+	--color-iron-900: #121110;
+}
+
+html {
+	color-scheme: dark;
+	background: var(--color-iron-900);
+}
