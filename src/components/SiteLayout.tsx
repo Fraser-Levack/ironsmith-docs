@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 // Links in the top bar. Docs pages live under their Markdown paths.
@@ -17,15 +18,15 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
 
 			<header className="relative border-b border-iron-500/60 bg-iron-700/80 backdrop-blur">
 				<nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-					<a href="/" className="text-lg font-bold tracking-tight text-iron-50">
+					<Link href="/" className="text-lg font-bold tracking-tight text-iron-50">
 						IronSmith
-					</a>
+					</Link>
 					<ul className="flex gap-6 text-sm">
 						{navLinks.map((link) => (
 							<li key={link.label}>
-								<a href={link.href} className="text-iron-200 transition-colors hover:text-ember-light">
+								<Link href={link.href} className="text-iron-200 transition-colors hover:text-ember-light">
 									{link.label}
-								</a>
+								</Link>
 							</li>
 						))}
 					</ul>

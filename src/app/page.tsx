@@ -1,5 +1,6 @@
-import SiteLayout from '../components/SiteLayout';
-import IrsmCode from '../components/IrsmCode';
+import Link from 'next/link';
+import SiteLayout from '@/components/SiteLayout';
+import IrsmCode from '@/components/IrsmCode';
 
 // ─────────────────────────────────────────────────────────────────────────
 // Content: edit these to change what the home page says.
@@ -98,7 +99,7 @@ export default function HomePage() {
 				<p className="mx-auto mt-5 max-w-2xl text-xl text-iron-200">{hero.tagline}</p>
 				<div className="mt-8 flex flex-wrap justify-center gap-3">
 					{hero.buttons.map((button) => (
-						<a
+						<Link
 							key={button.label}
 							href={button.href}
 							className={
@@ -108,7 +109,7 @@ export default function HomePage() {
 							}
 						>
 							{button.label}
-						</a>
+						</Link>
 					))}
 				</div>
 			</section>
@@ -142,9 +143,9 @@ export default function HomePage() {
 				<h2 className="text-3xl font-bold text-iron-50">Forged with IronSmith</h2>
 				<p className="mt-2 text-iron-200">
 					Every scene below is a short, commented <code>.irsm</code> script.{' '}
-					<a href="/getting-started/examples/" className="text-ember-light hover:underline">
+					<Link href="/getting-started/examples/" className="text-ember-light hover:underline">
 						See how they're made
-					</a>
+					</Link>
 					.
 				</p>
 				<div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -166,12 +167,12 @@ export default function HomePage() {
 					<strong className="text-iron-50">The Viewer</strong>, a Rust + wgpu raymarcher that turns that
 					bytecode into GPU shaders on the fly.
 				</p>
-				<a
+				<Link
 					href="/guides/architecture/"
 					className="mt-6 inline-block text-ember-light hover:underline"
 				>
 					Read the architecture overview →
-				</a>
+				</Link>
 			</section>
 		</SiteLayout>
 	);

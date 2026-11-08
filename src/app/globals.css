@@ -1,9 +1,9 @@
-/* Tailwind for the React pages (home page etc.). The Markdown docs don't
-   load this file, so Tailwind never affects them. */
 @import "tailwindcss";
 
-/* Site colours, usable as Tailwind classes: bg-iron-900, text-ember, ... */
-@theme {
+/* Site colours, usable as Tailwind classes: bg-iron-900, text-ember, ...
+   "static" keeps them all as CSS variables for (docs)/docs.css. */
+@theme static {
+	--color-ember-deep: #3b1508;
 	--color-ember: #e2591d;
 	--color-ember-light: #f08c4b;
 	--color-ember-pale: #f7b58c;
@@ -16,6 +16,7 @@
 	--color-iron-500: #2e2b28;
 	--color-iron-600: #1c1a18;
 	--color-iron-700: #171513;
+	--color-iron-800: #151312;
 	--color-iron-900: #121110;
 }
 

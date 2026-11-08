@@ -16,8 +16,8 @@ whole process.
 
 ## How the site works
 
-The site is built with [Astro Starlight](https://starlight.astro.build). All
-content lives in one folder:
+The site is built with [Next.js](https://nextjs.org). All content lives in one
+folder:
 
 ```
 ironsmith-docs/
@@ -26,12 +26,12 @@ ironsmith-docs/
 │   ├── language/
 │   ├── guides/
 │   └── contributing/
-└── src/react/               ← the home page (React + TypeScript + Tailwind)
+└── src/app/                 ← the home page (React + TypeScript + Tailwind)
 ```
 
 The **home page** isn't Markdown: it's a React component,
-`src/react/pages/HomePage.tsx`, styled with Tailwind. Its text, features and
-gallery are arrays at the top of that file. See `src/react/README.md`.
+`src/app/page.tsx`, styled with Tailwind. Its text, features and gallery are
+arrays at the top of that file. See `src/app/README.md`.
 
 A page is a Markdown file with a small header ("frontmatter"):
 
@@ -44,8 +44,8 @@ description: One sentence used for search results and link previews.
 Regular **Markdown** from here on: headings, code blocks, tables, images...
 ```
 
-That's it — the build turns it into a styled page with the site theme, search
-indexing, and dark mode, automatically.
+That's it — the build turns it into a styled page with the site theme and
+search indexing, automatically.
 
 ## Adding a whole new page
 
@@ -53,7 +53,7 @@ indexing, and dark mode, automatically.
    (e.g. `guides/my-guide.md`)
 2. Add the `title` and `description` frontmatter shown above
 3. Register it in the sidebar: add one line to the `sidebar` section of
-   `astro.config.mjs`
+   `src/lib/site.ts`
 4. Open a pull request
 
 ## Previewing locally (optional)
@@ -64,12 +64,14 @@ If you want to see your changes rendered before opening a PR:
 git clone https://github.com/Fraser-Levack/ironsmith-docs.git
 cd ironsmith-docs
 npm install
-npm run dev      # live-reloading preview at localhost:4321
+npm run dev      # preview at localhost:3000
 ```
+
+After saving a Markdown file, refresh the browser to see the change.
 
 ## Nice extras (all optional)
 
-Starlight supports callout boxes out of the box:
+Callout boxes (`note`, `tip`, `caution` and `danger`) are built in:
 
 ```markdown
 :::tip
