@@ -65,6 +65,22 @@ function remarkCallouts() {
 	};
 }
 
+/** Code colours, drawn from the site palette in globals.css. */
+const blueprintTheme = {
+	name: 'blueprint',
+	type: 'dark' as const,
+	colors: { 'editor.background': '#24464f', 'editor.foreground': '#f6f1ea' },
+	tokenColors: [
+		{ scope: ['comment'], settings: { foreground: '#b9cdcf', fontStyle: 'italic' } },
+		{ scope: ['string'], settings: { foreground: '#fbd9cc' } },
+		{
+			scope: ['constant.numeric', 'constant.language', 'keyword', 'storage', 'entity.name.tag', 'entity.name.section'],
+			settings: { foreground: '#f5b199' },
+		},
+		{ scope: ['entity.name.function', 'support.function'], settings: { foreground: '#fbd9cc' } },
+	],
+};
+
 const processor = unified()
 	.use(remarkParse)
 	.use(remarkGfm)
@@ -74,7 +90,7 @@ const processor = unified()
 	.use(remarkRehype, { allowDangerousHtml: true })
 	.use(rehypeRaw)
 	.use(rehypeSlug)
-	.use(rehypeShiki, { theme: 'night-owl', lazy: true, defaultLanguage: 'text', fallbackLanguage: 'text' });
+	.use(rehypeShiki, { theme: blueprintTheme, lazy: true, defaultLanguage: 'text', fallbackLanguage: 'text' });
 
 export interface Heading {
 	id: string;

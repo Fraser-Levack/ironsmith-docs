@@ -7,7 +7,7 @@ using the Next.js App Router.
 ```
 src/
 ├── app/page.tsx               ← the home page: edit the content arrays at the top
-├── app/globals.css            ← Tailwind, plus the site colours (bg-iron-900, text-ember, ...)
+├── app/globals.css            ← Tailwind, plus the site colours (bg-sheet, text-accent, ...)
 ├── app/(docs)/                ← the layout and route that render the Markdown docs
 ├── components/SiteLayout.tsx  ← top bar and footer shared by React pages
 └── components/IrsmCode.tsx    ← code panel with .irsm syntax colours
@@ -21,6 +21,14 @@ Images live in `public/` and are referenced from the site root
 (`public/gallery/robot.png` is `/gallery/robot.png`).
 
 Run `npm run dev` and the page reloads as you save.
+
+## Staying on the grid
+
+The home and 404 pages sit on a background grid of 24px squares, laid out in
+whole squares (the docs are not on the grid). Everything inside `<SiteLayout>` is
+on it. Put new sections in a `.sheet` column, use Tailwind spacing in multiples
+of 6 (`p-6`, `mt-12`, `pb-24`), and draw lines with `.frame` and `.rule-t` instead
+of Tailwind borders. `globals.css` explains each of these.
 
 ## Adding another React page
 

@@ -49,21 +49,21 @@ export default async function DocPage({ params }: Props) {
 		<div className="xl:flex">
 			<main className="min-w-0 flex-1 px-6 py-8">
 				<div className="mx-auto max-w-3xl">
-					<details className="mb-6 rounded-md border border-iron-500 bg-iron-700 px-4 py-2 xl:hidden">
-						<summary className="cursor-pointer text-sm font-semibold text-iron-50">On this page</summary>
+					<details className="mb-6 border border-line bg-sheet px-4 py-2 xl:hidden">
+						<summary className="cursor-pointer text-sm font-semibold text-paper">On this page</summary>
 						<div className="mt-3 pb-2">
 							<TableOfContents headings={headings} />
 						</div>
 					</details>
 
-					<h1 id="_top" className="text-4xl font-bold tracking-tight text-iron-50">
+					<h1 id="_top" className="text-4xl font-medium text-paper">
 						{doc.title}
 					</h1>
 					<div className="docs-content mt-6">{content}</div>
 
-					<footer className="mt-14 border-t border-iron-500 pt-6 text-sm text-iron-300">
+					<footer className="mt-14 border-t border-line pt-6 text-sm text-paper-dim">
 						<div className="flex flex-wrap justify-between gap-2">
-							<a href={editUrl(doc)} className="hover:text-ember-light">
+							<a href={editUrl(doc)} className="hover:text-accent-light">
 								Edit page
 							</a>
 							{updated && <span>Last updated: {dateFormat.format(updated)}</span>}
@@ -73,20 +73,20 @@ export default async function DocPage({ params }: Props) {
 								<Link
 									href={`/${prev.slug}/`}
 									rel="prev"
-									className="rounded-md border border-iron-500 p-3 transition-colors hover:border-ember"
+									className="border border-line p-3 transition-colors hover:border-accent"
 								>
-									<span className="block text-xs text-iron-300">Previous</span>
-									<span className="text-base text-iron-50">{prev.label}</span>
+									<span className="block text-xs text-paper-dim">Previous</span>
+									<span className="text-base text-paper">{prev.label}</span>
 								</Link>
 							)}
 							{next && (
 								<Link
 									href={`/${next.slug}/`}
 									rel="next"
-									className="rounded-md border border-iron-500 p-3 text-right transition-colors hover:border-ember sm:col-start-2"
+									className="border border-line p-3 text-right transition-colors hover:border-accent sm:col-start-2"
 								>
-									<span className="block text-xs text-iron-300">Next</span>
-									<span className="text-base text-iron-50">{next.label}</span>
+									<span className="block text-xs text-paper-dim">Next</span>
+									<span className="text-base text-paper">{next.label}</span>
 								</Link>
 							)}
 						</div>
@@ -96,7 +96,7 @@ export default async function DocPage({ params }: Props) {
 
 			<aside className="hidden w-72 shrink-0 xl:block">
 				<div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto px-4 py-8">
-					<h2 className="mb-3 text-sm font-semibold text-iron-50">On this page</h2>
+					<h2 className="mb-3 text-sm font-semibold text-paper">On this page</h2>
 					<TableOfContents headings={headings} />
 				</div>
 			</aside>

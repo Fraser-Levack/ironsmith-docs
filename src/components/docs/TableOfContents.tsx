@@ -35,8 +35,8 @@ export default function TableOfContents({ headings }: { headings: Heading[] }) {
 						aria-current={active === heading.id ? 'true' : undefined}
 						className={
 							active === heading.id
-								? 'text-ember-light'
-								: 'text-iron-200 transition-colors hover:text-iron-50'
+								? 'text-accent-light'
+								: 'text-paper-dim transition-colors hover:text-paper'
 						}
 					>
 						{heading.text}

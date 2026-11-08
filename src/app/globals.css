@@ -1,26 +1,232 @@
 @import "tailwindcss";
 
-/* Site colours, usable as Tailwind classes: bg-iron-900, text-ember, ...
-   "static" keeps them all as CSS variables for (docs)/docs.css. */
-@theme static {
-	--color-ember-deep: #3b1508;
-	--color-ember: #e2591d;
-	--color-ember-light: #f08c4b;
-	--color-ember-pale: #f7b58c;
+/* To use the licensed Moara font: put the file at public/fonts/Moara.woff2 and
+   uncomment this block. --font-display below already asks for it first. Then
+   re-measure the --hero-* numbers on .hero-title, which are specific to each font.
 
-	--color-iron-50: #f2efec;
-	--color-iron-100: #e0dcd7;
-	--color-iron-200: #b6b1ab;
-	--color-iron-300: #817b74;
-	--color-iron-400: #4e4a45;
-	--color-iron-500: #2e2b28;
-	--color-iron-600: #1c1a18;
-	--color-iron-700: #171513;
-	--color-iron-800: #151312;
-	--color-iron-900: #121110;
+@font-face {
+	font-family: "Moara";
+	src: url("/fonts/Moara.woff2") format("woff2");
+	font-display: swap;
+}
+*/
+
+/* Site colours and fonts, usable as Tailwind classes: bg-sheet, text-accent, font-display, ...
+   "static" keeps them all as CSS variables for (docs)/docs.css.
+
+   --color-accent is the one colour to change to re-accent the site (peach was #f5b199).
+   It's for large text and lines only: small text on the sheet should be
+   text-accent-light or text-paper, and text on an accent fill text-on-accent. */
+@theme static {
+	--color-sheet: #28383f;
+	--color-sheet-deep: #24464f;
+	--color-accent: #e2591d;
+	--color-accent-light: #fbd9cc;
+	--color-accent-soft: #f5b199;
+	--color-on-accent: #121110;
+	--color-paper: #f6f1ea;
+	--color-paper-dim: #dfe5e3;
+	--color-line: #719197;
+
+	--font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+	--font-mono: var(--font-plex-mono), ui-monospace, monospace;
+	--font-display: "Moara", var(--font-anton), Impact, sans-serif;
 }
 
 html {
 	color-scheme: dark;
-	background: var(--color-iron-900);
+	background: var(--color-sheet);
+}
+
+body {
+	background: var(--color-sheet);
+}
+
+::selection {
+	background: var(--color-accent);
+	color: var(--color-on-accent);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+}
+
+/* ==========================================================================
+   The grid, for pages inside .grid-page. One square is 24px, and everything
+   is laid out in whole squares: Tailwind spacing that's a multiple of 6 (p-6, mt-12, pb-24)
+   is on the grid, anything else isn't.
+
+   Use .frame and .rule-* for lines rather than Tailwind borders: they draw
+   exactly on a grid line and take up no space, so nothing below them shifts.
+   ========================================================================== */
+
+.grid-page {
+	/* Full-width lines run 1px past their box to reach a grid line. */
+	overflow-x: clip;
+	line-height: 24px;
+
+	/* Every line of text is a whole number of grid squares tall. */
+	--text-xs--line-height: 24px;
+	--text-sm--line-height: 24px;
+	--text-base--line-height: 24px;
+	--text-lg--line-height: 24px;
+	--text-xl--line-height: 24px;
+	--text-2xl--line-height: 48px;
+	--text-3xl--line-height: 48px;
+	--text-4xl--line-height: 48px;
+
+	background-image:
+		linear-gradient(rgb(246 241 234 / 0.07) 1px, transparent 1px),
+		linear-gradient(90deg, rgb(246 241 234 / 0.07) 1px, transparent 1px),
+		linear-gradient(rgb(246 241 234 / 0.035) 1px, transparent 1px),
+		linear-gradient(90deg, rgb(246 241 234 / 0.035) 1px, transparent 1px);
+	background-size:
+		120px 120px,
+		120px 120px,
+		24px 24px,
+		24px 24px;
+}
+
+/* Monospace labels and code blocks run at exactly 3 characters per grid square.
+   Code inside a sentence or a heading keeps its natural spacing. */
+.grid-page .font-mono:not(code),
+.grid-page pre {
+	letter-spacing: calc(8px - 0.6em);
+}
+
+/* Keeps inline code from stretching the line it sits in. */
+.grid-page :not(pre) > code {
+	line-height: 0;
+}
+
+@layer components {
+	/* A page column whose width and left edge are always on grid lines.
+	   The width steps in units that divide evenly into the layout's columns:
+	   2 columns from sm, 3 from lg. */
+	.sheet {
+		--max: 1272px;
+		--gutter: 24px;
+		--step: 24px;
+		--width: calc(round(down, min(100% - 48px, var(--max)) + var(--gutter), var(--step)) - var(--gutter));
+		container-type: inline-size;
+		width: var(--width);
+		margin-left: round((100% - var(--width)) / 2, 24px);
+	}
+
+	@media (min-width: 40rem) {
+		.sheet {
+			--step: 48px;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.sheet {
+			--step: 72px;
+		}
+	}
+
+	.frame,
+	.rule-t,
+	.rule-b {
+		position: relative;
+	}
+
+	/* Runs 1px past the box because a grid line is drawn just after its position. */
+	.frame::after {
+		position: absolute;
+		inset: 0 -1px -1px 0;
+		border: 1px solid var(--frame-color, var(--color-line));
+		content: "";
+		pointer-events: none;
+	}
+
+	.rule-t::before,
+	.rule-b::after {
+		position: absolute;
+		left: 0;
+		right: -1px;
+		height: 1px;
+		background: var(--frame-color, var(--color-line));
+		content: "";
+		pointer-events: none;
+	}
+
+	.rule-t::before {
+		top: 0;
+	}
+
+	.rule-b::after {
+		bottom: -1px;
+	}
+
+	.frame-accent {
+		--frame-color: var(--color-accent);
+	}
+
+	/* A 4:3 image cell, its height rounded to whole squares. Needs a
+	   .media-cell (or .sheet) around it to measure against. */
+	.media-cell {
+		container-type: inline-size;
+	}
+
+	.media {
+		display: block;
+		width: 100%;
+		height: round(75cqw, 24px);
+		object-fit: cover;
+	}
+
+	/* The hero title: exactly as wide as its column, with the tops and bottoms
+	   of the letters on grid lines. The size steps so the cap height is a whole
+	   number of squares, and letter-spacing absorbs the remainder. The extra 24px
+	   limits how tight that spacing gets, as very negative spacing paints short.
+
+	   The --hero-* numbers are properties of the font, measured for "IRONSMITH"
+	   as fractions of the font size: ink width, cap height, left side bearing. */
+	.hero-title {
+		--hero-ink: 3.9546;
+		--hero-cap: 0.8594;
+		--hero-bearing: 0.03125;
+		--size: round(down, calc((100cqw + 24px) / var(--hero-ink)), calc(24px / var(--hero-cap)));
+		display: flex;
+		align-items: baseline;
+		height: round(calc(var(--size) * var(--hero-cap)), 24px);
+		margin-left: calc(var(--size) * var(--hero-bearing) * -1);
+		font-size: var(--size);
+		line-height: 0;
+		letter-spacing: calc((100cqw - var(--size) * var(--hero-ink)) / 8);
+		white-space: nowrap;
+	}
+
+	/* An empty box the height of the title: the letters sit on its bottom edge. */
+	.hero-title::before {
+		height: 100%;
+		content: "";
+	}
+
+	/* A drafting dimension line with its label sitting in the middle. */
+	.dimension {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		margin-right: -1px;
+		border-inline: 1px solid var(--color-accent);
+		padding-block: 12px;
+		text-align: center;
+	}
+
+	.dimension::before {
+		position: absolute;
+		top: 24px;
+		inset-inline: 0;
+		border-top: 1px solid var(--color-accent);
+		content: "";
+	}
+
+	.dimension > span {
+		position: relative;
+		background: var(--color-sheet);
+		padding-inline: 24px;
+	}
 }

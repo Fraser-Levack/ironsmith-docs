@@ -88,24 +88,31 @@ const gallery = [
 // Layout
 // ─────────────────────────────────────────────────────────────────────────
 
+/** Numbers items the way a drawing numbers its figures: 01, 02, ... */
+function index(i: number) {
+	return String(i + 1).padStart(2, '0');
+}
+
+const sectionHeading = 'rule-t frame-accent pt-6 text-3xl font-medium text-paper';
+
 export default function HomePage() {
 	return (
 		<SiteLayout>
 			{/* Hero */}
-			<section className="mx-auto max-w-6xl px-6 pt-20 pb-12 text-center">
-				<h1 className="bg-gradient-to-r from-iron-50 via-ember-light to-ember bg-clip-text text-6xl font-extrabold tracking-tight text-transparent sm:text-7xl">
-					{hero.title}
-				</h1>
-				<p className="mx-auto mt-5 max-w-2xl text-xl text-iron-200">{hero.tagline}</p>
-				<div className="mt-8 flex flex-wrap justify-center gap-3">
+			<section className="sheet pt-12 pb-24">
+				<h1 className="hero-title font-display text-accent uppercase">{hero.title}</h1>
+				<p className="dimension mt-12 font-mono text-sm text-paper">
+					<span>{hero.tagline}</span>
+				</p>
+				<div className="mt-6 flex flex-wrap gap-6 font-mono text-xs uppercase">
 					{hero.buttons.map((button) => (
 						<Link
 							key={button.label}
 							href={button.href}
 							className={
 								button.primary
-									? 'rounded-full bg-ember px-6 py-2.5 font-semibold text-iron-900 transition-colors hover:bg-ember-light'
-									: 'rounded-full border border-iron-400 px-6 py-2.5 font-semibold text-iron-100 transition-colors hover:border-ember-light hover:text-ember-light'
+									? 'w-full bg-accent py-3 text-center font-medium text-on-accent transition-colors hover:bg-accent-light sm:w-48'
+									: 'frame w-full py-3 text-center text-paper transition-colors [--frame-color:var(--color-paper-dim)] hover:text-accent-light hover:[--frame-color:var(--color-accent)] sm:w-48'
 							}
 						>
 							{button.label}
@@ -115,61 +122,67 @@ export default function HomePage() {
 			</section>
 
 			{/* Code example beside its render */}
-			<section className="mx-auto max-w-6xl px-6 pb-16">
-				<div className="grid items-center gap-6 lg:grid-cols-5">
-					<div className="lg:col-span-3">
+			<section className="sheet pb-24">
+				<div className="grid gap-6 lg:grid-cols-3">
+					<div className="frame min-w-0 lg:col-span-2">
 						<IrsmCode code={example.code} />
 					</div>
-					<img src={example.image} alt={example.imageAlt} className="w-full rounded-xl lg:col-span-2" />
+					<div className="frame media-cell bg-sheet-deep">
+						<img src={example.image} alt={example.imageAlt} className="media lg:h-full" />
+					</div>
 				</div>
-				<p className="mt-4 text-center text-iron-300">{example.caption}</p>
+				<p className="mt-6 font-mono text-xs text-paper-dim">{example.caption}</p>
 			</section>
 
-			{/* Features: plain text, side by side */}
-			<section className="mx-auto max-w-6xl px-6 pb-20">
-				<h2 className="mb-8 text-3xl font-bold text-iron-50">Why IronSmith?</h2>
-				<div className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-					{features.map((feature) => (
-						<div key={feature.title}>
-							<h3 className="text-lg font-semibold text-ember-pale">{feature.title}</h3>
-							<p className="mt-1.5 text-iron-200">{feature.text}</p>
+			{/* Features */}
+			<section className="sheet pb-24">
+				<h2 className={sectionHeading}>Why IronSmith?</h2>
+				<div className="mt-6 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+					{features.map((feature, i) => (
+						<div key={feature.title} className="rule-t pt-6">
+							<span className="block font-mono text-xs text-accent-light">{index(i)}</span>
+							<h3 className="text-lg font-medium text-paper">{feature.title}</h3>
+							<p className="mt-6 text-paper-dim">{feature.text}</p>
 						</div>
 					))}
 				</div>
 			</section>
 
 			{/* Gallery */}
-			<section className="mx-auto max-w-6xl px-6 pb-20">
-				<h2 className="text-3xl font-bold text-iron-50">Forged with IronSmith</h2>
-				<p className="mt-2 text-iron-200">
-					Every scene below is a short, commented <code>.irsm</code> script.{' '}
-					<Link href="/getting-started/examples/" className="text-ember-light hover:underline">
+			<section className="sheet pb-24">
+				<h2 className={sectionHeading}>Forged with IronSmith</h2>
+				<p className="text-paper-dim">
+					Every scene below is a short, commented <code className="font-mono">.irsm</code> script.{' '}
+					<Link href="/getting-started/examples/" className="text-accent-light underline underline-offset-2">
 						See how they're made
 					</Link>
 					.
 				</p>
-				<div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-					{gallery.map((item) => (
-						<figure key={item.title} className="overflow-hidden rounded-xl border border-iron-500 bg-iron-600">
-							<img src={item.image} alt={item.alt} className="aspect-[4/3] w-full object-cover" />
-							<figcaption className="px-3 py-2 text-center text-sm text-iron-200">{item.title}</figcaption>
+				<div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					{gallery.map((item, i) => (
+						<figure key={item.title} className="frame media-cell bg-sheet">
+							<img src={item.image} alt={item.alt} className="media" />
+							<figcaption className="rule-t flex justify-between px-6 py-3 font-mono text-xs text-paper">
+								<span className="text-accent-light">FIG. {index(i)}</span>
+								<span>{item.title}</span>
+							</figcaption>
 						</figure>
 					))}
 				</div>
 			</section>
 
 			{/* How it works */}
-			<section className="mx-auto max-w-3xl px-6 pb-24 text-center">
-				<h2 className="text-3xl font-bold text-iron-50">Two languages, one forge</h2>
-				<p className="mt-4 text-lg text-iron-200">
-					IronSmith pairs <strong className="text-iron-50">The Forge</strong>, a Haskell terminal editor that
-					compiles <code>.irsm</code> scripts to a compact bytecode, with{' '}
-					<strong className="text-iron-50">The Viewer</strong>, a Rust + wgpu raymarcher that turns that
+			<section className="sheet pb-24">
+				<h2 className={sectionHeading}>Two languages, one forge</h2>
+				<p className="max-w-3xl text-lg text-paper-dim">
+					IronSmith pairs <strong className="font-medium text-paper">The Forge</strong>, a Haskell terminal editor that
+					compiles <code className="font-mono">.irsm</code> scripts to a compact bytecode, with{' '}
+					<strong className="font-medium text-paper">The Viewer</strong>, a Rust + wgpu raymarcher that turns that
 					bytecode into GPU shaders on the fly.
 				</p>
 				<Link
 					href="/guides/architecture/"
-					className="mt-6 inline-block text-ember-light hover:underline"
+					className="mt-6 inline-block font-mono text-xs text-accent-light uppercase hover:underline"
 				>
 					Read the architecture overview →
 				</Link>

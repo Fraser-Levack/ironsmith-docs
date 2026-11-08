@@ -15,12 +15,12 @@ function highlight(line: string): ReactNode[] {
 	while ((match = token.exec(line)) !== null) {
 		const [text, comment, hex, num, word] = match;
 		let cls = '';
-		if (comment) cls = 'text-iron-300 italic';
-		else if (hex) cls = 'text-fuchsia-400';
-		else if (num) cls = 'text-amber-300';
-		else if (word && SHAPES.includes(word)) cls = 'text-cyan-300';
-		else if (word && CSG.includes(word)) cls = 'text-fuchsia-300';
-		else if (word && TRANSFORMS.includes(word)) cls = 'text-sky-400';
+		if (comment) cls = 'text-paper-dim italic';
+		else if (hex) cls = 'text-accent-light';
+		else if (num) cls = 'text-accent-light';
+		else if (word && SHAPES.includes(word)) cls = 'text-accent-soft';
+		else if (word && CSG.includes(word)) cls = 'text-accent-soft font-medium';
+		else if (word && TRANSFORMS.includes(word)) cls = 'text-accent-light';
 		out.push(cls ? <span key={i++} className={cls}>{text}</span> : text);
 	}
 	return out;
@@ -30,7 +30,7 @@ function highlight(line: string): ReactNode[] {
 export default function IrsmCode({ code }: { code: string }) {
 	const lines = code.trim().split('\n');
 	return (
-		<pre className="overflow-x-auto rounded-xl border border-iron-500 bg-iron-700 p-5 text-sm leading-relaxed text-iron-100">
+		<pre className="overflow-x-auto h-full bg-sheet-deep p-6 font-mono text-sm text-paper [scrollbar-width:none]">
 			<code>
 				{lines.map((line, n) => (
 					<div key={n}>{line === '' ? ' ' : highlight(line)}</div>

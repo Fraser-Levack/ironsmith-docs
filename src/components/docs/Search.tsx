@@ -100,7 +100,7 @@ export default function Search() {
 				type="button"
 				onClick={open}
 				aria-label="Search"
-				className="flex h-9 w-full max-w-sm items-center justify-between rounded-md border border-iron-500 bg-iron-600 px-3 text-sm text-iron-300 transition-colors hover:border-iron-400 hover:text-iron-200"
+				className="flex h-9 w-full max-w-sm items-center justify-between border border-line bg-sheet px-3 text-sm text-paper-dim transition-colors hover:border-line hover:text-paper-dim"
 			>
 				<span>Search</span>
 				<kbd className="hidden text-xs sm:inline">Ctrl K</kbd>
@@ -123,12 +123,12 @@ export default function Search() {
 						onChange={(event) => setQuery(event.target.value)}
 						placeholder="Search the docs"
 						aria-label="Search the docs"
-						className="w-full rounded-md border border-iron-400 bg-iron-900 px-3 py-2 text-iron-50 outline-none focus:border-ember"
+						className="w-full border border-line bg-sheet-deep px-3 py-2 text-paper outline-none focus:border-accent"
 					/>
 					<div className="mt-3 max-h-[60vh] overflow-y-auto">
-						{failed && <p className="p-3 text-sm text-iron-200">Search couldn&apos;t be loaded. Try again.</p>}
+						{failed && <p className="p-3 text-sm text-paper-dim">Search couldn&apos;t be loaded. Try again.</p>}
 						{!failed && terms.length > 0 && results.length === 0 && (
-							<p className="p-3 text-sm text-iron-200">No results for “{query}”.</p>
+							<p className="p-3 text-sm text-paper-dim">No results for “{query}”.</p>
 						)}
 						<ul>
 							{results.map((result) => (
@@ -136,13 +136,13 @@ export default function Search() {
 									<Link
 										href={result.href}
 										onClick={() => dialog.current?.close()}
-										className="block rounded-md p-3 hover:bg-iron-500 focus:bg-iron-500"
+										className="block p-3 hover:bg-sheet-deep focus:bg-sheet-deep"
 									>
-										<div className="text-sm font-semibold text-iron-50">
+										<div className="text-sm font-semibold text-paper">
 											{result.page}
-											{result.heading && <span className="font-normal text-ember-pale"> › {result.heading}</span>}
+											{result.heading && <span className="font-normal text-accent-light"> › {result.heading}</span>}
 										</div>
-										<div className="search-snippet mt-1 text-sm text-iron-200">
+										<div className="search-snippet mt-1 text-sm text-paper-dim">
 											{highlight(snippet(result.text, terms), terms)}
 										</div>
 									</Link>

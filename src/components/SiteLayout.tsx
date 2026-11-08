@@ -9,38 +9,43 @@ const navLinks = [
 	{ label: 'GitHub', href: 'https://github.com/Fraser-Levack/IronSmith' },
 ];
 
+/** Width of a label in whole grid squares (monospace type is 8px per character). */
+function labelWidth(label: string) {
+	return Math.ceil((label.length * 8) / 24) * 24;
+}
+
 /** Top bar + footer shared by every React page. */
 export default function SiteLayout({ children }: { children: ReactNode }) {
 	return (
-		<div className="min-h-screen bg-iron-900 text-iron-100 antialiased">
-			{/* Faint ember glow at the top of the page */}
-			<div className="pointer-events-none fixed inset-x-0 top-0 h-96 bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(226,89,29,0.14),transparent_70%)]" />
-
-			<header className="relative border-b border-iron-500/60 bg-iron-700/80 backdrop-blur">
-				<nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-					<Link href="/" className="text-lg font-bold tracking-tight text-iron-50">
-						IronSmith
-					</Link>
-					<ul className="flex gap-6 text-sm">
-						{navLinks.map((link) => (
-							<li key={link.label}>
-								<Link href={link.href} className="text-iron-200 transition-colors hover:text-ember-light">
-									{link.label}
-								</Link>
-							</li>
-						))}
-					</ul>
-				</nav>
+		<div className="grid-page min-h-screen text-paper antialiased">
+			<header className="rule-b">
+				<div className="sheet">
+					<nav className="flex flex-wrap items-center justify-between py-3 font-mono text-xs uppercase">
+						<Link href="/" className="font-medium text-accent-light">
+							IronSmith
+						</Link>
+						<ul className="flex sm:gap-6">
+							{navLinks.map((link) => (
+								<li key={link.label} style={{ width: labelWidth(link.label) }}>
+									<Link href={link.href} className="text-paper transition-colors hover:text-accent-light">
+										{link.label}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</nav>
+				</div>
 			</header>
 
-			<main className="relative">{children}</main>
+			<main>{children}</main>
 
-			<footer className="relative border-t border-iron-500/60 py-8 text-center text-sm text-iron-300">
-				IronSmith is open source.{' '}
-				<a href="https://github.com/Fraser-Levack/IronSmith" className="text-ember-light hover:underline">
-					View it on GitHub
-				</a>
-				.
+			<footer className="rule-t font-mono text-xs uppercase">
+				<div className="sheet flex flex-wrap justify-between py-3 text-paper-dim">
+					<span>IronSmith is open source   © 2024 Fraser Levack</span>
+					<a href="https://github.com/Fraser-Levack/IronSmith" className="text-accent-light hover:underline">
+						View it on GitHub
+					</a>
+				</div>
 			</footer>
 		</div>
 	);
