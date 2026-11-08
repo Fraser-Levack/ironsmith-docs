@@ -75,13 +75,21 @@ const features = [
 	},
 ];
 
+// "shape" sets how much of the mosaic an image takes up: 'tall' is two rows high,
+// 'wide' two columns across and 'big' both. Leave it out for a single tile.
 const gallery = [
+	{ image: '/gallery/skeleton.png', title: 'Skeleton', alt: 'A full human skeleton waving from a stone plinth, its eye sockets glowing orange', shape: 'tall' },
+	{ image: '/gallery/torii.png', title: 'Torii at sunset', alt: 'A red torii gate and a snow-capped peak mirrored in still water at sunset', shape: 'big' },
 	{ image: '/gallery/starfighter_spin.gif', title: 'Starfighter', alt: 'A starfighter turning over a ringed gas giant' },
 	{ image: '/gallery/robot_spin.gif', title: 'Bolt the robot', alt: 'A cute robot waving on a turntable' },
 	{ image: '/gallery/lighthouse_spin.gif', title: 'Lighthouse island', alt: 'A lighthouse island at dusk, reflected in the sea' },
+	{ image: '/gallery/stones.png', title: 'Standing stones', alt: 'A ring of standing stones beneath an orange sundown sky', shape: 'wide' },
+	{ image: '/gallery/arcade.png', title: 'Arcade cabinet', alt: 'An arcade cabinet in a dark room, with a pixel-art anvil on its screen', shape: 'tall' },
 	{ image: '/gallery/forest_glade.png', title: 'Forest glade', alt: 'A forest glade with a pond and a fairy ring of toadstools' },
+	{ image: '/gallery/chess.png', title: 'Endgame', alt: 'A chessboard where the black king has been toppled' },
 	{ image: '/gallery/airship.png', title: 'Steampunk airship', alt: 'A steampunk airship above the clouds' },
 	{ image: '/gallery/launch_pad_flythrough.gif', title: 'Launch pad fly-through', alt: 'A camera fly-through of a rocket on its launch pad' },
+	{ image: '/gallery/rubber_duck.png', title: 'Rubber duck', alt: 'A yellow rubber duck drifting on rippling bathwater among soap bubbles' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -158,10 +166,10 @@ export default function HomePage() {
 					</Link>
 					.
 				</p>
-				<div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				<div className="mosaic mt-6 sm:grid-cols-2 lg:grid-cols-3">
 					{gallery.map((item, i) => (
-						<figure key={item.title} className="frame media-cell bg-sheet">
-							<img src={item.image} alt={item.alt} className="media" />
+						<figure key={item.title} className={`frame flex flex-col bg-sheet ${item.shape ? `mosaic-${item.shape}` : ''}`}>
+							<img src={item.image} alt={item.alt} className="h-0 w-full flex-1 object-cover" />
 							<figcaption className="rule-t flex justify-between px-6 py-3 font-mono text-xs text-paper">
 								<span className="text-accent-light">FIG. {index(i)}</span>
 								<span>{item.title}</span>

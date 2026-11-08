@@ -1,0 +1,58 @@
+// A torii gate standing in still water at sunset, with a snow-capped peak behind it.
+// The gate faces +X. There is no water surface: the "reflection" is a darker,
+// upside-down copy of everything, built below y = 0.
+
+light(0.9, 0.7, 0.5, 0.95)
+
+// ── Sky above, water below ─────────────────────────────
+// The hole on the light's side stops the shell from shadowing the scene.
+shell = difference(difference(sphere(34), sphere(33.6)), move(24.5, 19, 13.6, sphere(16)))
+upperHalf = move(0, 40, 0, cube(90, 80, 90))
+lowerHalf = move(0, -40, 0, cube(90, 80, 90))
+material(neon, paint(#6B1C09, intersection(shell, upperHalf)))
+material(neon, paint(#3A0C07, intersection(shell, lowerHalf)))
+
+// ── Sun and its reflection ─────────────────────────────
+material(neon, paint(#8F6633, move(-29, 8, 0, sphere(5.5))))
+material(neon, paint(#6E3D1B, move(-29, -8, 0, sphere(5.5))))
+
+// ── Mountains ──────────────────────────────────────────
+peakShape = cone(13, 14)
+snowShape = intersection(cone(13, 14), move(0, 5.5, 0, cube(20, 3.2, 20)))
+sideA = cone(11, 7)
+sideB = cone(9, 5)
+paint(#5C4A5E, move(-24, 7, 11, peakShape))
+paint(#FFF4EA, move(-24, 7.02, 11, snowShape))
+paint(#4A3D52, move(-26, 3.5, -14, sideA), move(-22, 2.5, 25, sideB))
+paint(#3A2C3E, move(-24, -7, 11, rotateX(180, peakShape)))
+paint(#B8A49C, move(-24, -7.02, 11, rotateX(180, snowShape)))
+paint(#2E2536, move(-26, -3.5, -14, rotateX(180, sideA)), move(-22, -2.5, 25, rotateX(180, sideB)))
+
+// ── The gate ───────────────────────────────────────────
+gateZ = 3.4
+pillar = move(0, 4.25, 0, cone(0.62, 0.46, 8.5))
+foot = move(0, 0.35, 0, cylinder(0.78, 0.7))
+
+redParts = group(move(0, 0, gateZ, pillar), move(0, 0, -gateZ, pillar),
+                 move(0, 6.2, 0, cube(0.42, 0.62, 9.3)),
+                 move(0, 7.2, 0, cube(0.36, 1.4, 0.7)),
+                 move(0, 8.1, 0, cube(0.72, 0.6, 11.2)))
+darkParts = group(move(0, 0, gateZ, foot), move(0, 0, -gateZ, foot),
+                  move(0, 8.7, 0, cube(1.02, 0.5, 11.9)),
+                  move(0, 9.0, 6.0, rotateX(-12, cube(1.02, 0.5, 1.9))),
+                  move(0, 9.0, -6.0, rotateX(12, cube(1.02, 0.5, 1.9))))
+plaque = move(0.2, 7.2, 0, cube(0.08, 0.95, 0.4))
+
+material(plastic, paint(#C8301E, redParts))
+paint(#17161A, darkParts)
+material(neon, paint(#8F5C11, plaque))
+
+paint(#7E2418, rotateX(180, redParts))
+paint(#141317, rotateX(180, darkParts))
+material(neon, paint(#5A3208, rotateX(180, plaque)))
+
+// ── A few streaks of light across the water ────────────
+material(neon, paint(#8F4A22,
+    move(9, 0, 0.8, cube(0.05, 0.02, 7)), move(13, 0, -1.5, cube(0.07, 0.02, 10)),
+    move(5, 0, -6, cube(0.05, 0.02, 6)), move(-7, 0, 3, cube(0.05, 0.02, 9)),
+    move(-12, 0, -3, cube(0.05, 0.02, 11))))

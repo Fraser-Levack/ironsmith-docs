@@ -177,6 +177,44 @@ body {
 		object-fit: cover;
 	}
 
+	/* The gallery: a mosaic of mixed tile sizes. Row height follows a 4:3 image in
+	   one column (plus its caption), rounded to whole squares. */
+	.mosaic {
+		--column: 100cqw;
+		display: grid;
+		grid-auto-flow: dense;
+		grid-auto-rows: round(calc(var(--column) * 0.75 + 48px), 24px);
+		gap: 24px;
+	}
+
+	.mosaic-tall,
+	.mosaic-big {
+		grid-row: span 2;
+	}
+
+	@media (max-width: 39.99rem) {
+		.mosaic-big {
+			grid-row: span 1;
+		}
+	}
+
+	@media (min-width: 40rem) {
+		.mosaic {
+			--column: calc((100cqw - 24px) / 2);
+		}
+
+		.mosaic-big,
+		.mosaic-wide {
+			grid-column: span 2;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.mosaic {
+			--column: calc((100cqw - 48px) / 3);
+		}
+	}
+
 	/* The hero title: exactly as wide as its column, with the tops and bottoms
 	   of the letters on grid lines. The size steps so the cap height is a whole
 	   number of squares, and letter-spacing absorbs the remainder. The extra 24px

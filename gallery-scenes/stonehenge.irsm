@@ -1,0 +1,34 @@
+// A ring of standing stones at sundown, built by rotating one stone around the centre.
+
+light(0.75, 0.42, -0.9, 1.05)
+
+// ── Sky, sun, ground, far hills ────────────────────────
+// The hole on the light's side stops the shell from shadowing the scene.
+material(neon, paint(#6B1C09, difference(difference(sphere(34), sphere(33.6)), move(20, 11, -24, sphere(18)))))
+material(neon, paint(#8F6633, move(-22, 6, -20, sphere(3.6))))
+paint(#57603A, move(0, -0.2, 0, cylinder(32, 0.4)))
+paint(#3E3A36, move(-27, -0.5, 16, scale(9, 2.8, 12, sphere(1))), move(-29, -0.5, -18, scale(7, 2.2, 13, sphere(1))))
+
+// ── The stones ─────────────────────────────────────────
+slab = intersection(cube(1.4, 5.4, 2.2), rotateY(45, cube(2.3, 6, 2.3)))
+ringStone = move(9.5, 2.5, 0, slab)
+lintel = move(9.5, 5.3, 0, cube(1.2, 0.85, 4.3))
+
+tallSlab = intersection(cube(1.6, 7.2, 1.8), rotateY(45, cube(2.3, 8, 2.3)))
+trilithon = group(move(5, 3.4, 1.15, tallSlab), move(5, 3.4, -1.15, tallSlab), move(5, 7.2, 0, cube(1.4, 0.95, 4.2)))
+
+paint(#8C8778,
+      rotateY(0, ringStone), rotateY(24, ringStone), rotateY(48, ringStone), rotateY(72, ringStone),
+      rotateY(120, ringStone), rotateY(144, ringStone), rotateY(168, ringStone),
+      rotateY(216, ringStone), rotateY(240, ringStone),
+      rotateY(288, ringStone), rotateY(312, ringStone), rotateY(336, ringStone),
+      rotateY(12, lintel), rotateY(36, lintel), rotateY(60, lintel),
+      rotateY(132, lintel), rotateY(156, lintel),
+      rotateY(300, lintel), rotateY(324, lintel))
+
+paint(#7C7768, rotateY(180, trilithon), rotateY(135, trilithon), rotateY(225, trilithon), rotateY(100, trilithon), rotateY(260, trilithon))
+
+// ── A few that have fallen, and the altar stone ────────
+paint(#6E6A5D, move(11, 0.6, 7.8, rotateY(35, rotateZ(86, slab))),
+               rotateY(192, move(9, 0.5, 2, rotateY(70, rotateZ(90, slab)))),
+               move(0, 0.3, 0, cube(4.6, 0.6, 1.3)))

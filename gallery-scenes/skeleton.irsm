@@ -1,0 +1,113 @@
+// A full skeleton on a stone plinth, waving hello with ember eyes.
+// Faces +X, feet on the ground at y = 0, about 17 units tall.
+
+light(1.1, 1.7, 0.9, 1.15)
+
+// A dark backdrop: a thin glowing shell around the whole scene
+// The hole on the light's side stops the shell from shadowing the scene.
+material(neon, paint(#010204, difference(difference(sphere(34), sphere(33.6)), move(16.6, 25.8, 13.6, sphere(22)))))
+
+// ── Skull (built around its own centre) ────────────────
+cranium = move(-0.18, 0.4, 0, scale(1.22, 1.05, 1.0, sphere(1.2)))
+brow = move(0.78, 0.26, 0, scale(0.38, 0.2, 0.85, sphere(1)))
+cheek = move(0.52, -0.5, 0, intersection(cube(1.3, 1.25, 1.5), sphere(1.02)))
+zygoma = sphere(0.2)
+socket = scale(1, 1.05, 1, sphere(0.36))
+noseHole = move(1.22, -0.36, 0, scale(0.5, 0.3, 0.16, sphere(1)))
+skullSolid = difference(group(cranium, brow, cheek, move(0.72, -0.28, 0.74, zygoma), move(0.72, -0.28, -0.74, zygoma)),
+                        group(move(1.12, 0.02, 0.44, socket), move(1.12, 0.02, -0.44, socket), noseHole))
+
+// Teeth: an arc of tiny blocks, cut from a ring
+toothGaps = repeat(0, 0, 0.21, cube(4, 0.6, 0.16))
+frontHalf = move(1, 0, 0, cube(2, 1, 3))
+upperArc = difference(cylinder(0.86, 0.3), cylinder(0.7, 0.5))
+lowerArc = difference(cylinder(0.78, 0.26), cylinder(0.62, 0.5))
+upperTeeth = move(0.3, -1.14, 0, intersection(intersection(upperArc, toothGaps), frontHalf))
+lowerTeeth = move(0.3, -1.42, 0, intersection(intersection(lowerArc, toothGaps), frontHalf))
+
+// Jaw: a U of bone with two arms running up to the skull
+jawBar = move(0.3, -1.62, 0, intersection(torus(0.8, 0.16), move(0.7, 0, 0, cube(1.8, 1, 3))))
+ramus = rotateZ(14, cube(0.42, 1.1, 0.15))
+jaw = group(jawBar, move(-0.28, -1.15, 0.8, ramus), move(-0.28, -1.15, -0.8, ramus), move(1.08, -1.64, 0, sphere(0.2)))
+
+skull = group(skullSolid, upperTeeth, lowerTeeth, jaw)
+skullX = 0.1
+skullY = 15.6
+
+// ── Spine and ribs ─────────────────────────────────────
+neck = intersection(repeat(0, 0.34, 0, cylinder(0.25, 0.22)), move(-0.15, 14.05, 0, cube(1, 1.2, 1)))
+vertebra = group(cylinder(0.34, 0.3), move(-0.32, 0, 0, cube(0.55, 0.16, 0.15)))
+spine = move(-0.6, 0, 0, intersection(repeat(0, 0.44, 0, vertebra), move(0, 10.7, 0, cube(3, 5.4, 3))))
+
+// Each rib is a flattened ring hung from the spine, front edge dropped
+rib1 = move(0.12, 13.05, 0, rotateZ(12, scale(0.72, 1, 1.25, torus(1.0, 0.1))))
+rib2 = move(0.37, 12.55, 0, rotateZ(13, scale(0.72, 1, 1.25, torus(1.35, 0.1))))
+rib3 = move(0.55, 12.05, 0, rotateZ(14, scale(0.72, 1, 1.25, torus(1.6, 0.1))))
+rib4 = move(0.66, 11.55, 0, rotateZ(15, scale(0.72, 1, 1.25, torus(1.75, 0.1))))
+rib5 = move(0.73, 11.05, 0, rotateZ(16, scale(0.72, 1, 1.25, torus(1.85, 0.1))))
+rib6 = move(0.73, 10.55, 0, rotateZ(17, scale(0.72, 1, 1.25, torus(1.85, 0.1))))
+frontGap = move(1.5, 0, 0, cube(1.6, 1.2, 2.2))
+rib7 = move(0.66, 10.05, 0, rotateZ(18, difference(scale(0.72, 1, 1.25, torus(1.75, 0.1)), frontGap)))
+rib8 = move(0.55, 9.55, 0, rotateZ(19, difference(scale(0.72, 1, 1.25, torus(1.6, 0.1)), frontGap)))
+sternum = move(1.6, 11.8, 0, rotateZ(8, cube(0.14, 2.6, 0.4)))
+
+// ── Shoulder girdle ────────────────────────────────────
+clavicle = rotateX(90, cylinder(0.11, 3.0))
+scapula = scale(0.12, 1.1, 0.75, sphere(1))
+
+// ── Arms (each hangs down from its top joint) ──────────
+humerus = group(sphere(0.38), move(0, -1.75, 0, cylinder(0.19, 3.5)),
+                move(0, -3.5, 0.15, sphere(0.28)), move(0, -3.5, -0.15, sphere(0.28)))
+
+finger = group(move(0, -0.3, 0, cylinder(0.055, 0.6)), move(0, -0.6, 0, sphere(0.075)),
+               move(0, -0.82, 0, cylinder(0.05, 0.45)), move(0, -1.05, 0, sphere(0.065)),
+               move(0, -1.22, 0, cylinder(0.045, 0.35)))
+hand = group(move(0, -0.18, 0, scale(0.2, 0.24, 0.42, sphere(1))),
+             move(0, -0.2, 0.34, finger), move(0, -0.28, 0.17, finger), move(0, -0.3, 0, finger),
+             move(0, -0.28, -0.17, finger), move(0, -0.2, -0.34, rotateX(-32, scale(0.85, finger))))
+forearm = group(move(0, -1.6, 0.14, cylinder(0.12, 3.2)), move(0, -1.6, -0.14, cylinder(0.1, 3.2)), move(0, -3.3, 0, hand))
+
+restingArm = group(humerus, move(0, -3.5, 0, rotateX(5, forearm)))
+wavingArm = group(humerus, move(0, -3.5, 0, rotateX(-62, forearm)))
+
+// ── Pelvis ─────────────────────────────────────────────
+pelvicRing = move(0.1, 7.5, 0, scale(0.8, 1, 1.0, torus(1.2, 0.17)))
+ilium = difference(scale(0.26, 1.05, 0.95, sphere(1)), move(0.25, -0.75, 0, sphere(0.62)))
+sacrum = move(-0.62, 7.95, 0, scale(0.3, 0.95, 0.65, sphere(1)))
+pubis = move(1.05, 7.15, 0, sphere(0.26))
+
+// ── Legs (each hangs down from its hip) ────────────────
+femur = group(sphere(0.42), move(0, -1.9, 0, cylinder(0.24, 3.8)),
+              move(0, -3.8, 0.2, sphere(0.33)), move(0, -3.8, -0.2, sphere(0.33)), move(0.3, -3.8, 0, sphere(0.24)))
+
+toe = rotateZ(90, cylinder(0.075, 1.0))
+foot = group(move(-0.3, -0.1, 0, scale(0.4, 0.24, 0.3, sphere(1))), move(0.2, -0.14, 0, cube(0.8, 0.22, 0.55)),
+             move(1.0, -0.26, 0.3, toe), move(1.08, -0.26, 0.15, toe), move(1.12, -0.26, 0, toe),
+             move(1.08, -0.26, -0.15, toe), move(1.0, -0.26, -0.3, toe))
+shin = group(move(0, -1.6, 0, cylinder(0.21, 3.2)), move(-0.14, -1.6, 0.26, cylinder(0.09, 3.1)),
+             move(0, -3.2, 0, sphere(0.22)), move(0, -3.2, 0, foot))
+
+leg = group(femur, move(0, -3.8, 0, shin))
+
+// ── Assemble in bone colour ────────────────────────────
+paint(#E6DDC6,
+      move(skullX, skullY, 0, skull),
+      neck, spine,
+      rib1, rib2, rib3, rib4, rib5, rib6, rib7, rib8, sternum,
+      move(0.65, 13.75, 1.55, rotateX(-8, rotateY(24, clavicle))), move(0.65, 13.75, -1.55, rotateX(8, rotateY(-24, clavicle))),
+      move(-1.05, 12.4, 2.1, rotateY(20, scapula)), move(-1.05, 12.4, -2.1, rotateY(-20, scapula)),
+      move(0, 13.3, 3.1, rotateX(9, restingArm)),
+      move(0, 13.3, -3.1, rotateX(-118, wavingArm)),
+      pelvicRing, sacrum, pubis,
+      move(-0.1, 8.3, 1.25, rotateY(-38, rotateX(14, ilium))), move(-0.1, 8.3, -1.25, rotateY(38, rotateX(-14, ilium))),
+      move(0, 7.5, 1.15, leg), move(0, 7.5, -1.15, leg))
+
+// Dark sockets, and an ember glow inside each one
+paint(#120D0A, move(skullX + 0.92, skullY + 0.02, 0.44, sphere(0.3)), move(skullX + 0.92, skullY + 0.02, -0.44, sphere(0.3)),
+      move(skullX + 1.0, skullY - 0.36, 0, scale(0.3, 0.26, 0.13, sphere(1))))
+material(neon, paint(#8F2E06, move(skullX + 1.16, skullY + 0.02, 0.44, sphere(0.13)), move(skullX + 1.16, skullY + 0.02, -0.44, sphere(0.13))))
+
+// ── Plinth ─────────────────────────────────────────────
+paint(#23292C, move(0, -0.25, 0, cylinder(5.6, 0.5)))
+paint(#1A1F21, move(0, -0.75, 0, cylinder(6.2, 0.6)))
+material(neon, paint(#8F2E06, move(0, -0.02, 0, torus(5.3, 0.05))))

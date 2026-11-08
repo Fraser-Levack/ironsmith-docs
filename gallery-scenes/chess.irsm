@@ -1,0 +1,44 @@
+// A chess endgame: white has just won, and the black king lies toppled.
+// The board is 8 x 8 squares of size 2, with its top face at y = 0.3.
+
+light(0.8, 1.5, 0.7, 1.15)
+
+// A dark backdrop: the hole on the light's side stops the shell shadowing the scene.
+material(neon, paint(#020102, difference(difference(sphere(34), sphere(33.6)), move(14.8, 27.8, 13, sphere(22)))))
+
+// ── Board ──────────────────────────────────────────────
+squares = repeat(4, 0, 4, cube(2, 1, 2))
+material(plastic, paint(#EADBBB, cube(16, 0.6, 16)))
+material(plastic, paint(#5B3A24, intersection(cube(16, 0.62, 16), group(move(1, 0, 1, squares), move(3, 0, 3, squares)))))
+material(plastic, paint(#2C1B10, move(0, -0.25, 0, cube(17.4, 0.5, 17.4))))
+
+// ── Pieces (each stands on y = 0) ──────────────────────
+plinth = group(move(0, 0.12, 0, cylinder(0.72, 0.24)), move(0, 0.3, 0, cylinder(0.6, 0.16)))
+
+pawn = group(plinth, move(0, 0.95, 0, cone(0.5, 0.2, 1.2)), move(0, 1.58, 0, cylinder(0.34, 0.08)), move(0, 1.95, 0, sphere(0.42)))
+
+slots = group(cube(1.6, 0.34, 0.18), cube(0.18, 0.34, 1.6))
+rook = group(plinth, move(0, 1.4, 0, cone(0.6, 0.42, 2.1)), move(0, 2.45, 0, cylinder(0.56, 0.12)),
+             move(0, 2.78, 0, difference(cylinder(0.6, 0.55), group(move(0, 0.16, 0, slots), move(0, 0.1, 0, cylinder(0.38, 0.5))))))
+
+bishopHead = difference(scale(0.46, 0.68, 0.46, sphere(1)), move(0.3, 0.26, 0, rotateZ(-38, cube(0.5, 0.09, 1))))
+bishop = group(plinth, move(0, 1.55, 0, cone(0.58, 0.2, 2.5)), move(0, 2.85, 0, cylinder(0.42, 0.1)),
+               move(0, 3.42, 0, bishopHead), move(0, 4.12, 0, sphere(0.12)))
+
+
+queenCrown = difference(move(0, 0, 0, cone(0.34, 0.56, 0.5)), move(0, 0.3, 0, sphere(0.34)))
+queen = group(plinth, move(0, 1.85, 0, cone(0.68, 0.24, 3.1)), move(0, 3.45, 0, cylinder(0.5, 0.12)),
+              move(0, 3.8, 0, queenCrown), move(0, 4.2, 0, sphere(0.16)))
+
+king = group(plinth, move(0, 2.0, 0, cone(0.72, 0.26, 3.4)), move(0, 3.75, 0, cylinder(0.52, 0.12)),
+             move(0, 4.2, 0, cone(0.3, 0.55, 0.8)), move(0, 4.95, 0, cube(0.2, 0.75, 0.2)), move(0, 5.0, 0, cube(0.2, 0.2, 0.62)))
+
+// ── The position ───────────────────────────────────────
+top = 0.3
+material(plastic, paint(#F3EBD8,
+    move(-1, top, 1, king), move(3, top, 3, queen), move(1, top, -3, rook), move(-5, top, 5, bishop),
+    move(5, top, 1, pawn), move(-3, top, 7, pawn), move(-7, top, 3, pawn), move(1, top, 7, pawn)))
+
+material(plastic, paint(#1B1C22,
+    move(3.4, top + 0.72, -4.2, rotateY(30, rotateZ(88, king))),
+    move(-5, top, -3, rook), move(-3, top, -7, pawn), move(5, top, -7, pawn), move(7, top, -5, bishop)))
