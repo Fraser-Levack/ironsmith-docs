@@ -1,0 +1,51 @@
+// A synthwave horizon, made for the crt filter.
+// That filter blooms bright pixels and draws scanlines across everything, so the
+// scene is thin glowing lines and a striped sun on near-black.
+// Neon is colour x 1.8 before gamma, so these hex values look darker than they render.
+
+light(0, 1, 1, 0.5)
+
+// ── Sky: a shell that gets lighter towards the horizon ─
+// The hole on the light's side, behind the camera, stops it shadowing the scene.
+shell = difference(difference(sphere(34), sphere(33.6)), move(0, 24, 24, sphere(20)))
+material(neon, paint(#0E0117, intersection(shell, move(0, 1.5, 0, cube(90, 3, 90)))))
+material(neon, paint(#070110, intersection(shell, move(0, 4.5, 0, cube(90, 3, 90)))))
+material(neon, paint(#030009, intersection(shell, move(0, 8.5, 0, cube(90, 5, 90)))))
+material(neon, paint(#000003, intersection(shell, move(0, 27, 0, cube(90, 32, 90)))))
+
+// Stars: a 3D grid of points, kept only where it passes through a layer just inside
+// the sky. The curve of the layer makes the regular grid look scattered.
+stars = repeat(3.1, 2.9, 3.3, sphere(0.1))
+skyLayer = intersection(difference(sphere(33.5), sphere(32.3)), move(0, 28, 0, cube(90, 32, 90)))
+material(neon, paint(#FFFFFF, intersection(stars, skyLayer)))
+
+// ── Sun, with slits widening towards the horizon ───────
+sunDisc = move(0, 9.5, -27, rotateX(90, cylinder(11.5, 0.4)))
+slits = group(move(0, 8.2, -27, cube(30, 0.45, 2)), move(0, 6.2, -27, cube(30, 0.7, 2)),
+              move(0, 4.0, -27, cube(30, 1.0, 2)), move(0, 1.6, -27, cube(30, 1.3, 2)))
+sun = difference(sunDisc, slits)
+material(neon, paint(#FF6609, intersection(sun, move(0, 19, 0, cube(40, 11, 80)))))
+material(neon, paint(#FF2504, intersection(sun, move(0, 11, 0, cube(40, 5, 80)))))
+material(neon, paint(#FF071F, intersection(sun, move(0, 6.5, 0, cube(40, 4, 80)))))
+material(neon, paint(#700140, intersection(sun, move(0, 2, 0, cube(40, 5, 80)))))
+
+// ── Mountains: black diamonds with a cyan edge behind ──
+peak = group(paint(#000000, material(neon, rotateZ(45, cube(10, 10, 1.5)))),
+             paint(#01708C, material(neon, move(0, 0, -0.9, rotateZ(45, cube(10.5, 10.5, 0.5))))))
+move(15, 0, -20, peak)
+move(23, 0, -17, scale(1.3, peak))
+move(32, 0, -14, scale(0.9, peak))
+move(-16, 0, -21, scale(1.1, peak))
+move(-25, 0, -16, scale(1.25, peak))
+move(-33, 0, -13, scale(0.8, peak))
+
+// ── Palms: silhouettes against the sun ─────────────────
+frond = rotateZ(32, move(2.3, 0, 0, scale(2.6, 0.2, 0.55, sphere(1))))
+crown = group(frond, rotateY(60, frond), rotateY(120, frond), rotateY(180, frond), rotateY(240, frond), rotateY(300, frond))
+palm = group(move(-0.35, 5, 0, rotateZ(-4, cylinder(0.22, 10))), move(-0.7, 10, 0, crown))
+material(neon, paint(#000000, move(-6.5, 0, -8, scale(0.9, palm)), move(9.5, 0, -13, rotateY(180, scale(0.85, palm)))))
+
+// ── The grid ───────────────────────────────────────────
+paint(#040108, move(0, -0.5, 0, cube(90, 1, 90)))
+gridLines = group(repeat(3, 0, 0, cube(0.16, 0.12, 90)), repeat(0, 0, 3, cube(90, 0.12, 0.16)))
+material(neon, paint(#8C0170, intersection(gridLines, move(0, 0.06, 0, cube(90, 0.2, 90)))))

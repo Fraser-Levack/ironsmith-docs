@@ -78,6 +78,9 @@ Things worth putting in an agent's instructions:
 - `difference(a, b)` cuts `b` out of `a`.
 - Keep scenes within about 30 units of the origin. The viewer only raymarches
   inside a bounding sphere around it.
+- `render` uses whichever [filter](/guides/filters/) the viewer has active, and
+  has no filter option of its own. A filter that fails to compile doesn't fail
+  the render, so check `forge.log` and look at the image.
 
 The IronSmith repository has a complete guide written *for* agents in
 [`docs/AGENT_GUIDE.md`](https://github.com/Fraser-Levack/IronSmith/blob/main/docs/AGENT_GUIDE.md):

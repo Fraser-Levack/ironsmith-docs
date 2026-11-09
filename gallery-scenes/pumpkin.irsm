@@ -1,0 +1,55 @@
+// A jack-o'-lantern, made for the ascii filter.
+// That filter picks a character per cell by brightness and keeps the colour, so
+// this is one bold silhouette with a blazing face that survives as text.
+// Faces +X, ground at y = 0.
+
+light(1, 0.9, 0.45, 0.95)
+
+// A dark backdrop: the hole on the light's side stops the shell shadowing the scene.
+material(neon, paint(#000000, difference(difference(sphere(30), sphere(29.6)), move(16, 14.4, 7.2, sphere(16)))))
+
+// ── Body: ten overlapping lobes around the Y axis ──────
+lobe = scale(3.4, 4.6, 3.0, sphere(1))
+pair = group(move(2.8, 0, 0, lobe), move(-2.8, 0, 0, lobe))
+// Turned 18 degrees so a groove, not a lobe, runs down the middle of the face
+body = rotateY(18, group(pair, rotateY(36, pair), rotateY(72, pair), rotateY(108, pair), rotateY(144, pair)))
+
+// Sits low in the body, so the mouth opens into it
+hollow = move(0, -0.7, 0, scale(1, 0.7, 1, sphere(4.85)))
+candle = move(0, -0.7, 0, scale(1, 0.7, 1, sphere(5.0)))
+
+// ── The carved face (cutters run along X) ──────────────
+diamond = rotateX(45, cube(8, 2.5, 2.5))
+eye = intersection(diamond, move(0, 1.1, 0, cube(9, 2.2, 6)))
+
+noseDiamond = rotateX(45, cube(8, 1.5, 1.5))
+noseCut = intersection(noseDiamond, move(0, 0.6, 0, cube(9, 1.2, 4)))
+
+// A crescent smile, along X, with blocks of pumpkin left behind as teeth
+smileOuter = rotateZ(90, cylinder(4.3, 8))
+smile = difference(move(0, 1.1, 0, smileOuter), move(0, 2.7, 0, rotateZ(90, cylinder(4.6, 9))))
+smileTrim = intersection(smile, cube(9, 12, 7.6))
+toothTop1 = move(0, -1.7, 1.5, cube(9, 1.1, 1.1))
+toothTop2 = move(0, -1.7, -1.5, cube(9, 1.1, 1.1))
+toothLow = move(0, -3.15, 0, cube(9, 1.0, 1.2))
+mouth = difference(smileTrim, group(toothTop1, toothTop2, toothLow))
+
+face = group(move(5, 1.0, 2.25, eye), move(5, 1.0, -2.25, eye), move(5, -0.2, 0, noseCut), move(5, -0.1, 0, mouth))
+
+// ── Assemble, sitting on the ground ────────────────────
+y = 4.0
+// Matte, because a shiny highlight would print as a stray block of # next to the eyes
+paint(#D45E0A, move(0, y, 0, difference(body, group(hollow, face))))
+
+// The candle light fills the hollow, so every cut reads as flat bright yellow
+material(neon, paint(#FFD24A, move(0, y, 0, candle)))
+
+// Candle light filling the carved shapes almost to the surface, so they stay bright as text
+material(neon, paint(#FFD24A, move(0, y, 0, intersection(scale(0.96, body), face))))
+
+// Stalk
+stalk = group(rotateZ(-14, move(0, 1.2, 0, cone(1.2, 0.72, 2.6))), move(-0.05, -0.1, 0, cylinder(1.5, 0.5)))
+paint(#5C6E2E, move(0, y + 3.2, 0, stalk))
+
+// ── Ground ─────────────────────────────────────────────
+paint(#07050A, move(0, -0.25, 0, cylinder(11, 0.5)))

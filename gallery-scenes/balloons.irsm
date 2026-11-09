@@ -1,0 +1,42 @@
+// Hot-air balloons, made for the halftone filter.
+// Printed dots only show their range on smooth gradients, so this is big round
+// shapes with side lighting, in strong colours that separate into inks well.
+
+light(0.5, 0.6, 1, 1.1)
+
+// Pale sky: only the half of the shell in shot, so it can't shadow the scene.
+material(neon, paint(#174A7D, intersection(difference(sphere(34), sphere(33.6)), move(0, 0, -26, cube(100, 100, 68)))))
+
+// ── One balloon, centred on its envelope ───────────────
+envelope = group(sphere(4), move(0, -4.5, 0, cone(0.8, 2.65, 3)))
+skin = group(sphere(4.04), move(0, -4.5, 0, cone(0.84, 2.69, 3.02)))
+
+bar = cube(40, 40, 1.6)
+gores = group(bar, rotateY(60, bar), rotateY(120, bar))
+stripes = intersection(skin, gores)
+belt = difference(intersection(group(sphere(4.08), move(0, -4.5, 0, cone(0.88, 2.73, 3.04))), move(0, -1.2, 0, cube(20, 1, 20))), sphere(3))
+
+basket = move(0, -8.1, 0, cube(1.5, 1.2, 1.5))
+ropes = group(move(0.55, -6.8, 0.55, cylinder(0.05, 1.8)), move(-0.55, -6.8, 0.55, cylinder(0.05, 1.8)),
+              move(0.55, -6.8, -0.55, cylinder(0.05, 1.8)), move(-0.55, -6.8, -0.55, cylinder(0.05, 1.8)))
+fittings = paint(#6B4524, basket, ropes)
+
+// ── Three colourways ───────────────────────────────────
+redBalloon = group(material(plastic, paint(#D4221C, envelope)), material(plastic, paint(#F4C21F, stripes)),
+                   paint(#1F4FA8, belt), fittings)
+blueBalloon = group(material(plastic, paint(#1E5FB4, envelope)), material(plastic, paint(#F2EEDC, stripes)),
+                    paint(#D4221C, belt), fittings)
+greenBalloon = group(material(plastic, paint(#2C9A52, envelope)), material(plastic, paint(#F06A24, stripes)),
+                     paint(#F2EEDC, belt), fittings)
+
+move(0, 15, 0, scale(1.35, redBalloon))
+move(-16, 20, -7, scale(0.95, blueBalloon))
+move(13, 12, -5, scale(0.85, greenBalloon))
+
+// ── Clouds ─────────────────────────────────────────────
+puff = group(sphere(1.6), move(1.8, -0.2, 0, sphere(1.2)), move(-1.8, -0.3, 0.2, sphere(1.1)), move(0.5, 0.8, -0.3, sphere(1.1)))
+paint(#F4F1E8, move(-15, 8, 2, puff), move(17, 15, 0, scale(1.3, puff)), move(-5, 24, -4, scale(0.8, puff)), move(7, 5, 5, scale(0.7, puff)))
+
+// ── Hills ──────────────────────────────────────────────
+paint(#4F9A3C, move(-14, -18, -4, sphere(22)))
+paint(#6FB04A, move(14, -20, 0, sphere(24)))

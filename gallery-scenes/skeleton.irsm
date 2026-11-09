@@ -7,32 +7,32 @@ light(1.1, 1.7, 0.9, 1.15)
 // The hole on the light's side stops the shell from shadowing the scene.
 material(neon, paint(#010204, difference(difference(sphere(34), sphere(33.6)), move(16.6, 25.8, 13.6, sphere(22)))))
 
-// ── Skull (built around its own centre) ────────────────
-cranium = move(-0.18, 0.4, 0, scale(1.22, 1.05, 1.0, sphere(1.2)))
-brow = move(0.78, 0.26, 0, scale(0.38, 0.2, 0.85, sphere(1)))
-cheek = move(0.52, -0.5, 0, intersection(cube(1.3, 1.25, 1.5), sphere(1.02)))
-zygoma = sphere(0.2)
-socket = scale(1, 1.05, 1, sphere(0.36))
-noseHole = move(1.22, -0.36, 0, scale(0.5, 0.3, 0.16, sphere(1)))
-skullSolid = difference(group(cranium, brow, cheek, move(0.72, -0.28, 0.74, zygoma), move(0.72, -0.28, -0.74, zygoma)),
-                        group(move(1.12, 0.02, 0.44, socket), move(1.12, 0.02, -0.44, socket), noseHole))
+// ── Skull ──────────────────────────────────────────────
+// Modelled facing +Z around its own centre, then scaled and turned to +X below.
+jaw_cut_outs = group(
+    move(0, -3, 1.5, sphere(2.7)),
+    rotateX(15, move(0, -2, 1, cylinder(2.7, 3)))
+)
+lower_jaw = rotateX(2, intersection(jaw_cut_outs, move(0, -3, 1.5, cube(3.5, 3.5, 4))))
 
-// Teeth: an arc of tiny blocks, cut from a ring
-toothGaps = repeat(0, 0, 0.21, cube(4, 0.6, 0.16))
-frontHalf = move(1, 0, 0, cube(2, 1, 3))
-upperArc = difference(cylinder(0.86, 0.3), cylinder(0.7, 0.5))
-lowerArc = difference(cylinder(0.78, 0.26), cylinder(0.62, 0.5))
-upperTeeth = move(0.3, -1.14, 0, intersection(intersection(upperArc, toothGaps), frontHalf))
-lowerTeeth = move(0.3, -1.42, 0, intersection(intersection(lowerArc, toothGaps), frontHalf))
+eyes = group(move(1.5, 0, 3, rotateX(90, cylinder(1, 3))), move(-1.5, 0, 3, rotateX(90, cylinder(1, 3))))
+nose = move(0, -1, 3.5, cone(0.8, 0.3, 2))
+structure = group(sphere(4), lower_jaw)
 
-// Jaw: a U of bone with two arms running up to the skull
-jawBar = move(0.3, -1.62, 0, intersection(torus(0.8, 0.16), move(0.7, 0, 0, cube(1.8, 1, 3))))
-ramus = rotateZ(14, cube(0.42, 1.1, 0.15))
-jaw = group(jawBar, move(-0.28, -1.15, 0.8, ramus), move(-0.28, -1.15, -0.8, ramus), move(1.08, -1.64, 0, sphere(0.2)))
+teeth_upper = repeat(0.5, 0, 0, cone(0.3, 0.2, 0.4))
+teeth_lower = move(0, 0.2, 0, repeat(0.5, 0, 0, cone(0.2, 0.3, 0.4)))
+teeth = move(0, -3, 3.25, intersection(cube(3.5, 0.9, 4), group(teeth_upper, teeth_lower)))
+mouth_cut_out = move(0, -2.85, 3.25, cube(3.6, 0.5, 2))
 
-skull = group(skullSolid, upperTeeth, lowerTeeth, jaw)
+removal = group(sphere(3.6), scale(0.9, lower_jaw), eyes, nose, mouth_cut_out)
+skull = group(difference(structure, removal), teeth)
+
+// Ember glow sitting inside the hollow skull, behind each eye socket
+embers = group(move(1.5, 0, 2.2, sphere(0.55)), move(-1.5, 0, 2.2, sphere(0.55)))
+
 skullX = 0.1
-skullY = 15.6
+skullY = 15.9
+skullSize = 0.37
 
 // ── Spine and ribs ─────────────────────────────────────
 neck = intersection(repeat(0, 0.34, 0, cylinder(0.25, 0.22)), move(-0.15, 14.05, 0, cube(1, 1.2, 1)))
@@ -91,7 +91,7 @@ leg = group(femur, move(0, -3.8, 0, shin))
 
 // ── Assemble in bone colour ────────────────────────────
 paint(#E6DDC6,
-      move(skullX, skullY, 0, skull),
+      move(skullX, skullY, 0, scale(skullSize, rotateY(-90, skull))),
       neck, spine,
       rib1, rib2, rib3, rib4, rib5, rib6, rib7, rib8, sternum,
       move(0.65, 13.75, 1.55, rotateX(-8, rotateY(24, clavicle))), move(0.65, 13.75, -1.55, rotateX(8, rotateY(-24, clavicle))),
@@ -102,10 +102,8 @@ paint(#E6DDC6,
       move(-0.1, 8.3, 1.25, rotateY(-38, rotateX(14, ilium))), move(-0.1, 8.3, -1.25, rotateY(38, rotateX(-14, ilium))),
       move(0, 7.5, 1.15, leg), move(0, 7.5, -1.15, leg))
 
-// Dark sockets, and an ember glow inside each one
-paint(#120D0A, move(skullX + 0.92, skullY + 0.02, 0.44, sphere(0.3)), move(skullX + 0.92, skullY + 0.02, -0.44, sphere(0.3)),
-      move(skullX + 1.0, skullY - 0.36, 0, scale(0.3, 0.26, 0.13, sphere(1))))
-material(neon, paint(#8F2E06, move(skullX + 1.16, skullY + 0.02, 0.44, sphere(0.13)), move(skullX + 1.16, skullY + 0.02, -0.44, sphere(0.13))))
+// An ember glow behind each eye socket
+material(neon, paint(#8F2E06, move(skullX, skullY, 0, scale(skullSize, rotateY(-90, embers)))))
 
 // ── Plinth ─────────────────────────────────────────────
 paint(#23292C, move(0, -0.25, 0, cylinder(5.6, 0.5)))

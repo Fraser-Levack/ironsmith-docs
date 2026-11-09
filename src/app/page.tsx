@@ -90,6 +90,13 @@ const gallery = [
 	{ image: '/gallery/airship.png', title: 'Steampunk airship', alt: 'A steampunk airship above the clouds' },
 	{ image: '/gallery/launch_pad_flythrough.gif', title: 'Launch pad fly-through', alt: 'A camera fly-through of a rocket on its launch pad' },
 	{ image: '/gallery/rubber_duck.png', title: 'Rubber duck', alt: 'A yellow rubber duck drifting on rippling bathwater among soap bubbles' },
+	{ image: '/gallery/pumpkin_ascii.png', title: 'Jack-o\'-lantern, ascii filter', alt: 'A carved pumpkin drawn in orange text characters, its face picked out in bright hash signs', shape: 'big' },
+	{ image: '/gallery/clockwork_edges.png', title: 'Clockwork, edge filter', alt: 'A train of meshing gears drawn as glowing white outlines on black' },
+	{ image: '/gallery/volcano_heatmap.png', title: 'Volcano, heatmap filter', alt: 'An erupting volcano in thermal colours, red at the crater through yellow to green at the shore' },
+	{ image: '/gallery/synthwave_crt.png', title: 'Synthwave, crt filter', alt: 'A striped sun behind dark mountains and a magenta grid, shown on a curved old television with scanlines', shape: 'wide' },
+	{ image: '/gallery/balloons_halftone.png', title: 'Balloons, halftone filter', alt: 'Hot-air balloons over green hills, printed in comic-book dots' },
+	{ image: '/gallery/treasure_pixel_art.png', title: 'Treasure, pixel art filter', alt: 'An open treasure chest drawn in chunky pixels' },
+	{ image: '/gallery/butterfly_stained_glass.png', title: 'Butterfly, stained glass filter', alt: 'An orange butterfly as a stained-glass window of irregular panes', shape: 'wide' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────

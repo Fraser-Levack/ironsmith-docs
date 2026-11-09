@@ -1,0 +1,72 @@
+// An erupting volcano, made for the heatmap filter.
+// That filter colours each pixel by brightness, so temperature is painted in:
+// the mountain and its lava step down in brightness with height, which turns
+// into clean isotherm bands on the thermal ramp.
+
+light(0.8, 0.8, 0.5, 0.8)
+
+// A black backdrop reads as "cold". The hole on the light's side stops it shadowing the scene.
+material(neon, paint(#000000, difference(difference(sphere(36), sphere(35.6)), move(16.6, 18.7, 11, sphere(20)))))
+
+// ── The mountain: three cones with a concave profile ───
+mountain = group(move(0, 1.5, 0, cone(15, 8, 3)), move(0, 4.5, 0, cone(8, 4.6, 3)), move(0, 8, 0, cone(4.6, 3, 4)))
+skin = group(move(0, 1.5, 0, cone(15.08, 8.08, 3.02)), move(0, 4.5, 0, cone(8.08, 4.68, 3.02)), move(0, 8, 0, cone(4.68, 3.08, 4.02)))
+crater = move(0, 11, 0, sphere(3.2))
+
+paint(#0F0D0C, difference(mountain, crater))
+
+// A heated skin around the summit, fading out in narrow steps as it goes down
+peak = difference(skin, crater)
+material(neon, paint(#3A0F05, intersection(peak, move(0, 11.5, 0, cube(40, 1, 40)))))
+material(neon, paint(#2C0C04, intersection(peak, move(0, 10.5, 0, cube(40, 1, 40)))))
+material(neon, paint(#200903, intersection(peak, move(0, 9.5, 0, cube(40, 1, 40)))))
+material(neon, paint(#160603, intersection(peak, move(0, 8.5, 0, cube(40, 1, 40)))))
+material(neon, paint(#0E0402, intersection(peak, move(0, 7.5, 0, cube(40, 1, 40)))))
+
+// ── Lava rivers ────────────────────────────────────────
+// Rivers start as thin strips at the crater, then become wedges that spread downhill.
+wedge = intersection(rotateY(1.3, move(20, 0, -20, cube(40, 40, 40))), rotateY(-1.3, move(20, 0, 20, cube(40, 40, 40))))
+fan = intersection(rotateY(2.8, move(20, 0, -20, cube(40, 40, 40))), rotateY(-2.8, move(20, 0, 20, cube(40, 40, 40))))
+
+// Each river is three wedges at slightly different angles, so it wanders downhill.
+strip = move(10, 0, 0, cube(20, 40, 0.55))
+upper = group(rotateY(20, strip), rotateY(-48, strip), rotateY(72, strip), rotateY(146, strip), rotateY(-110, strip))
+middle = group(rotateY(23, wedge), rotateY(-45, fan), rotateY(69, fan), rotateY(150, wedge), rotateY(-113, fan))
+lower = group(rotateY(18, fan), rotateY(-50, fan), rotateY(74, fan), rotateY(145, fan), rotateY(-108, fan))
+rivers = intersection(peak, group(intersection(upper, move(0, 9.5, 0, cube(40, 5, 40))),
+                                  intersection(middle, move(0, 5, 0, cube(40, 4, 40))),
+                                  intersection(lower, move(0, 1.5, 0, cube(40, 3, 40)))))
+
+// The same rivers, cut into height bands that step down in temperature
+band1 = intersection(rivers, move(0, 10, 0, cube(40, 2, 40)))
+band2 = intersection(rivers, move(0, 8.25, 0, cube(40, 1.5, 40)))
+band3 = intersection(rivers, move(0, 6.75, 0, cube(40, 1.5, 40)))
+band4 = intersection(rivers, move(0, 5.25, 0, cube(40, 1.5, 40)))
+band5 = intersection(rivers, move(0, 3.75, 0, cube(40, 1.5, 40)))
+band6 = intersection(rivers, move(0, 2.25, 0, cube(40, 1.5, 40)))
+band7 = intersection(rivers, move(0, 0.75, 0, cube(40, 1.5, 40)))
+
+// Neon is colour x 1.8 before gamma, so these are picked to land evenly on the ramp:
+// red at the crater, through orange and yellow, to green at the shore.
+material(neon, paint(#C85E10, move(0, 8.7, 0, cylinder(2.3, 0.3))))
+material(neon, paint(#A04B0C, band1))
+material(neon, paint(#8C3A08, band2))
+material(neon, paint(#7A2C05, band3))
+material(neon, paint(#6C2504, band4))
+material(neon, paint(#601F03, band5))
+material(neon, paint(#541A02, band6))
+material(neon, paint(#441402, band7))
+
+// ── Fountain of lava bombs ─────────────────────────────
+material(neon, paint(#C85E10, move(0, 9.4, 0, sphere(0.8)), move(0.1, 10.5, 0, sphere(0.6)), move(-0.1, 11.4, 0.1, sphere(0.42)),
+                     move(0.5, 12.6, 0.3, sphere(0.34)), move(-0.6, 13.6, -0.2, sphere(0.28)), move(0.2, 14.8, -0.5, sphere(0.24))))
+material(neon, paint(#8C3A08, move(2.4, 12.8, 1.1, sphere(0.3)), move(-2.8, 12.2, -1.2, sphere(0.32)),
+                     move(3.8, 10.8, 2.2, sphere(0.26)), move(-4.1, 10.2, 1.6, sphere(0.26)), move(1.2, 12.2, -3.2, sphere(0.26))))
+
+// ── Ash plume: a column that billows wider as it rises ─
+paint(#262422, move(0, 14.4, 0, sphere(1.0)), move(-0.6, 15.6, 0.3, sphere(1.3)), move(0.7, 16.8, -0.3, sphere(1.6)),
+      move(-0.9, 18, 0.5, sphere(1.9)), move(1.3, 19, -0.5, sphere(2.1)), move(-2.2, 19.6, -0.3, sphere(2)), move(0.2, 20.8, 0.3, sphere(2.5)))
+
+// ── Base: a slab of dark sea on a stone plinth ─────────
+material(plastic, paint(#04070C, move(0, -0.2, 0, cylinder(17, 0.4))))
+paint(#14181C, move(0, -1, 0, cylinder(17.6, 1.2)))

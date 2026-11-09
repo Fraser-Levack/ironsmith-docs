@@ -1,0 +1,44 @@
+// A butterfly window, made for the stained_glass filter.
+// Each pane takes one flat colour, so everything is neon (no shading) and laid out
+// in large, saturated areas. It lies flat in the XY plane and faces +Z.
+// Neon is colour x 1.8 before gamma, so these hex values look darker than they render.
+
+light(0, 0, 1, 0.5)
+
+// ── Backdrop: rings of colour, each disc behind the last ──
+disc = rotateX(90, cylinder(1, 0.2))
+material(neon, paint(#042570, move(0, 0, -3, scale(9, 9, 1, disc))))
+material(neon, paint(#004B40, move(0, 0, -3.4, scale(14, 14, 1, disc))))
+material(neon, paint(#17024B, move(0, 0, -3.8, scale(19, 19, 1, disc))))
+material(neon, paint(#010756, move(0, 0, -4.2, scale(25, 25, 1, disc))))
+material(neon, paint(#004B40, move(0, 0, -4.6, scale(40, 40, 1, disc))))
+
+// ── Wing layers. Each sits a little proud of the last, and they are all ──
+// ── centred on z = 0, so the rotated left side shows them too.          ──
+fore1 = move(5.2, 2.9, 0, rotateZ(28, scale(6.2, 3.7, 1, rotateX(90, cylinder(1, 0.2)))))
+fore2 = move(5.2, 2.9, 0, rotateZ(28, scale(5.3, 2.95, 1, rotateX(90, cylinder(1, 0.4)))))
+fore3 = move(4.3, 2.5, 0, rotateZ(28, scale(2.9, 1.5, 1, rotateX(90, cylinder(1, 0.6)))))
+
+hind1 = move(3.9, -3.4, 0, rotateZ(-34, scale(4.2, 3.4, 1, rotateX(90, cylinder(1, 0.2)))))
+hind2 = move(3.9, -3.4, 0, rotateZ(-34, scale(3.45, 2.7, 1, rotateX(90, cylinder(1, 0.4)))))
+eyeOuter = move(4.3, -3.8, 0, rotateX(90, cylinder(1.25, 0.6)))
+eyeInner = move(4.3, -3.8, 0, rotateX(90, cylinder(0.6, 0.8)))
+
+spots = group(move(10.1, 5.9, 0, sphere(0.5)), move(9.0, 7.0, 0, sphere(0.5)), move(7.6, 7.3, 0, sphere(0.45)),
+              move(10.8, 4.5, 0, sphere(0.45)), move(7.4, -5.2, 0, sphere(0.42)), move(5.6, -6.5, 0, sphere(0.42)))
+
+rightBlack = group(fore1, hind1)
+rightOrange = group(fore2, hind2)
+
+// Wing edges are dark plum, not black: a black pane would vanish into the lead lines.
+material(neon, paint(#070112, rightBlack, rotateY(180, rightBlack)))
+material(neon, paint(#FF1D00, rightOrange, rotateY(180, rightOrange)))
+material(neon, paint(#FF6301, fore3, rotateY(180, fore3)))
+material(neon, paint(#004B40, eyeOuter, rotateY(180, eyeOuter)))
+material(neon, paint(#070112, eyeInner, rotateY(180, eyeInner)))
+material(neon, paint(#FFFFFF, spots, rotateY(180, spots)))
+
+// ── Body and antennae ──────────────────────────────────
+antenna = group(move(1.0, 6.1, 0, rotateZ(-22, cylinder(0.14, 4))), move(1.85, 8.05, 0, sphere(0.4)))
+material(neon, paint(#070112, move(0, 0.5, 0, scale(0.7, 5.2, 0.8, sphere(1))), move(0, 4.5, 0, sphere(0.85)),
+                     antenna, rotateY(180, antenna)))

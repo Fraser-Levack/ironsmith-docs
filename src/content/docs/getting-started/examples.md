@@ -122,6 +122,16 @@ fly-through.
 the small example from the home page. The anvil is one `group` of boxes and a
 cone, and the glowing bar and sparks are `neon`.
 
+## Made for filters
+
+![A gear train drawn as glowing outlines by the edge detection filter](/gallery/clockwork_edges.png)
+
+Some scenes are built to get the most out of a post-processing
+[filter](/guides/filters/#filters-in-action): a gear train for `edge_detection`,
+a volcano for `heatmap` and a jack-o'-lantern for `ascii`. There are
+[four more filters](/guides/filters/#more-filters-to-try) to download, each with
+its own scene.
+
 ## Common tricks
 
 | Want | Use |
